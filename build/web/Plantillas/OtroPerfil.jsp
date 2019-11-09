@@ -4,6 +4,11 @@
     Author     : Alumno
 --%>
 
+<%@page import="org.apache.tomcat.util.http.fileupload.FileItem"%>
+<%@page import="org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext"%>
+<%@page import="java.io.File"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
@@ -39,27 +44,67 @@
                 }
             }
             
+            function seguir(){
+                var user=document.getElementById("user").innerHTML;
+                var input = document.getElementById('inseguir');
+            
+                input.value=user;
+                document.formSeguir.submit();
+            }
         </script>
     </head>
     <body>
         <%
-            String user = (String)session.getAttribute("usuario");
-            String imagenperfil = (String)session.getAttribute("ImagenPerfil");
-            String nombre = (String)session.getAttribute("nombre");
-            String IdUsuario = (String)session.getAttribute("IdUsuario");
+            String nombre ="";
+            String nombre2="";
+            String user="";
+            String imagenperfil="";
+            int IdUsuario=0;
+            String rutalocal=getServletContext().getRealPath("/");
+            String rutacarp=rutalocal+"Uploads";
+            String nruta=rutacarp.replace("\\","/");
+            String ruta=nruta.replaceAll("/build",""); 
+            String objeto = "";
+                
+            File destino = new File(ruta);
+                
+            ServletRequestContext src = new ServletRequestContext(request);
+            if(ServletFileUpload.isMultipartContent(src)){
+                DiskFileItemFactory factory = new DiskFileItemFactory((1024*1024),destino);
+                ServletFileUpload upload = new  ServletFileUpload(factory);
+                java.util.List lista = upload.parseRequest(src);
+                java.util.Iterator it = lista.iterator();
+ 
+                while(it.hasNext()){
+                    FileItem item=(FileItem)it.next();
+                    if(item.isFormField()){                                       
+                        if (item.getFieldName().equals("quien"))
+                            nombre = item.getString();
+                    }
+                }
+        }
             
             Connection con = null;
             Statement sta = null;
+            Statement sta2 = null;
             ResultSet result;
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
                 sta = con.createStatement();
+                sta2 = con.createStatement();
                 } catch (SQLException error) {
                     out.print(error.toString());
                 }
             
+            result=sta2.executeQuery("select * from usuario where Username_Usuario='"+nombre+"';");
+            if(result.next()){
+                IdUsuario=result.getInt("Id_Usuario");
+                nombre2=result.getString("Nombre_Usuario");
+                user=result.getString("Username_Usuario");
+                imagenperfil=result.getString("Imagen_Usuario");
+            }
             ResultSet resultado = sta.executeQuery("select * from publicacion where Id_Usuario = '"+IdUsuario+"' order by fecha desc") ;
         %>
         <div class="MenuA">
@@ -115,12 +160,12 @@
                 <div class="Publicaciones">
                     
                         <%
-                            while(resultado.next()){
+                            while(resultado.next()){           
                             out.println("<div class='publicacion'>");
                             
                                 out.println("<img src='../" + imagenperfil + "'/>");
-                                out.println("<p class='nombre Raleway'>"+nombre+"</p>");
-                                out.println("<p class='user Raleway'>"+user+"</p>");
+                                out.println("<p class='nombre Raleway'>"+nombre2+"</p>");
+                                out.println("<p id='user' class='user Raleway'>"+user+"</p>");
                                 out.println("<p class='contenido'> "+ resultado.getString("contenido") +" </p>");
                                 
                                     out.println("<div class='imagenCuadro'>");
@@ -135,6 +180,7 @@
                                     
                             out.println("</div>");
                             }
+                            con.close();
                         %>
                     
                 </div>
@@ -146,8 +192,12 @@
                     <p class="nombreS"><%=nombre%></p>
                     <p class="userS"><%=user%></p>
                 </div>
-                <img src="../<%=imagenperfil%>" alt=""/>     
+                <img src="../<%=imagenperfil%>" alt=""/> 
+                <button class="btnFont" onclick="seguir()">Seguir</button>
             </center>
         </div>
+        <form name="formSeguir" action="Seguir.jsp" enctype=multipart/form-data method="POST">
+                <input id="inseguir" name="seguire" style="display: none" type="text">
+        </form>
     </body>
 </html>

@@ -147,7 +147,6 @@
                     <p class="userS"><%=user%></p>
                 </div>
                 <img src="../<%=imagenperfil%>" alt=""/>     
-                <button class="btnFont" id="modificar" onclick="location.href='ModificarDatos.html'">Modificar Datos</button>
             </center>
         </div>
     </body>

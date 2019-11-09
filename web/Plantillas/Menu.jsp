@@ -52,22 +52,29 @@
                     alert("Para realizar una publicación necesitas ingresar una imagen o un texto");
                 }
                 else{
-                    document.publicar.submit() 
+                    document.publicar.submit();
                 }
             }
             
         function buscarU(){
-            document.buscar.submit()
+            document.buscar.submit();
         }
-        
+        function mandarPerfil(element){
+            var nombre=element.innerHTML;
+            var input = document.getElementById('otroPerfil');
+            
+            input.value=nombre;
+            document.perfil.submit();
+        }
     </script>
     <body onload="deshabilitaRetroceso() " >
-        <form name="publicar" action="Publicar2.jsp" enctype=multipart/form-data method="POST">
         <form name="buscar" action="Buscar.jsp" enctype=multipart/form-data method="POST">
+        
         <%@page import="java.io.*, java.text.SimpleDateFormat" %>
         <%
             String user = (String)session.getAttribute("usuario");
             String imagenperfil = (String)session.getAttribute("ImagenPerfil");
+            int contador=0;
             
             if(user ==null)
             {
@@ -98,19 +105,24 @@
             Connection con = null;
             Statement sta = null;
             Statement sta2=null;
-            ResultSet result, resultaPub;
+            Statement sta3=null;
+            ResultSet result, result2;
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
                 sta = con.createStatement();
                 sta2 = con.createStatement();
+                sta3 = con.createStatement();
                 } catch (SQLException error) {
                     out.print(error.toString());
                 }
             
-            ResultSet resultado = sta.executeQuery("select * from publicacion order by fecha desc") ;
-            
+            ResultSet resultado = sta.executeQuery(
+                    "select * from(select usuario.Id_Usuario from usuario join siguiendo "
+                            + "on siguiendo.Id_Siguiendo=usuario.Id_Usuario "
+                            + "and siguiendo.Id_Usuario="+(Integer.parseInt(IdUsuario))+") as R1 "
+                            + "join publicacion on publicacion.Id_Usuario=R1.Id_Usuario order by fecha desc;") ;
         %>
         <div class="MenuA">
             <div class="Logo">
@@ -165,6 +177,7 @@
                 <p class="nada" id="texto" name="imagenTexto"></p>
             </button>
             </form>
+            <form name="publicar" action="Publicar2.jsp" enctype=multipart/form-data method="POST">
             <BR><BR>
             <p class="DancingScript">Publicar</p>
             <textarea name="contenidoPublicacion" id="cajaPublicacion"> </textarea><br>
@@ -204,6 +217,42 @@
                     
                 </div>    
         </form>
+        </div>
+        <form name="perfil" action="OtroPerfil.jsp" enctype=multipart/form-data method="POST">
+        <div class="Datos" style="position: absolute">
+            <p class="nombreS">Seguidos:</p>
+            <%
+                result=sta.executeQuery("select distinct Nombre_Usuario, Imagen_Usuario, Username_Usuario from usuario join siguiendo "
+                        + "on siguiendo.Id_Siguiendo=usuario.Id_Usuario and siguiendo.Id_Usuario="+(Integer.parseInt(IdUsuario))+";");
+                while(result.next()){
+                    out.println("<div class='publicacion'style='width:80%;'>");
+                    out.println("<img style='max-width: 15%;' src='../" + result.getString("Imagen_Usuario") + "'/>");
+                    out.println("<br>");
+                    out.println("<p class='nombre Raleway' style='text-decoration: underline; cursor:pointer;' "
+                        + "onclick='mandarPerfil(nombresito"+contador+")'>"+result.getString("Nombre_Usuario")+"</p>");
+                    out.println("<p id='nombresito"+contador+"' class='user Raleway'>"+result.getString("Username_Usuario")+"</p>");                                    
+                    contador++;
+                    out.println("</div>");
+                }
+            %>
+            <br>
+            <p class="nombreS">Seguidores:</p>
+            <%
+                result=sta.executeQuery("select Nombre_Usuario, Imagen_Usuario, Username_Usuario from usuario join seguidor "
+                        + "on seguidor.Id_Seguidor=usuario.Id_Usuario and seguidor.Id_Usuario="+(Integer.parseInt(IdUsuario))+";");
+                while(result.next()){
+                    out.println("<div class='publicacion'style='width:80%;'>");
+                    out.println("<img style='max-width: 15%;' src='../" + result.getString("Imagen_Usuario") + "'/>");
+                    out.println("<br>");
+                    out.println("<p class='nombre Raleway' style='text-decoration: underline; cursor:pointer;' "
+                        + "onclick='mandarPerfil(nombresito"+contador+")'>"+result.getString("Nombre_Usuario")+"</p>");
+                    out.println("<p id='nombresito"+contador+"' class='user Raleway'>"+result.getString("Username_Usuario")+"</p>");                                    
+                    contador++;
+                    out.println("</div>");
+                }
+            %>   
+        </div>
+        <input id="otroPerfil" name="quien" style="display: none" type="text">
         </form>
     </body>
 </html>

@@ -94,7 +94,7 @@
                         out.println("<script>window.location.href = 'Menu.jsp';</script>");
                     }
                  catch (SQLException error) {     
-                    out.println("<script>alert('Ha ocurrido un error con tu publicacion');window.location.href = 'Perfil.jsp';</script>");
+                    out.println("<script>alert('Ha ocurrido un error con tu publicacion');window.location.href = 'Menu.jsp';</script>");
                     out.println(error);
                 }
                 con.close();
