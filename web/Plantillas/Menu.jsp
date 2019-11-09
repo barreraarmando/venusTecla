@@ -55,10 +55,15 @@
                     document.publicar.submit() 
                 }
             }
+            
+        function buscarU(){
+            document.buscar.submit()
+        }
         
     </script>
     <body onload="deshabilitaRetroceso() " >
         <form name="publicar" action="Publicar2.jsp" enctype=multipart/form-data method="POST">
+        <form name="buscar" action="Buscar.jsp" enctype=multipart/form-data method="POST">
         <%@page import="java.io.*, java.text.SimpleDateFormat" %>
         <%
             String user = (String)session.getAttribute("usuario");
@@ -153,8 +158,15 @@
         <div class="TimeLine">
             <div class="bien">
                 <center><h1 style="font-family: 'Raleway', cursive; color: #8d3536;;">¡Bienvenido: <%=user%>!  <img style="height: 50px; width: 50px; border-radius: 50%" src="../<%=imagenperfil%>"></h1></center>
-                </div>
-            <p class="DancingScript">Publicaciones</p>
+            </div>
+            
+            <textarea name="textBuscar" id ="cajaBuscar" placeholder="Buscar en Venus" style="height: 25px; width:90% ; background-color: #FFFFFF;"></textarea>
+            <button type="button" onclick="buscarU()"class="fa fa-map-pin imagen btn btnSR" style="font-size: 25px; height: 40px; width:6%;" id="foto">
+                <p class="nada" id="texto" name="imagenTexto"></p>
+            </button>
+            </form>
+            <BR><BR>
+            <p class="DancingScript">Publicar</p>
             <textarea name="contenidoPublicacion" id="cajaPublicacion"> </textarea><br>
             <button type="button" class="fa fa-picture-o imagen btn btnSR" id="foto">
                 <p class="nada" id="texto" name="imagenTexto"></p>
@@ -190,7 +202,8 @@
                             }
                         %>
                     
-                </div>           
+                </div>    
+        </form>
         </form>
     </body>
 </html>
