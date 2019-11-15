@@ -45,7 +45,7 @@
             }
             
             function seguir(){
-                var user=document.getElementById("user").innerHTML;
+                var user=document.getElementById("sacar").innerHTML;
                 var input = document.getElementById('inseguir');
             
                 input.value=user;
@@ -186,18 +186,18 @@
                 </div>
             </div>
         </div>
+        <form name="formSeguir" action="Seguir.jsp" enctype=multipart/form-data method="POST">
         <div class="Datos">
             <center>
                 <div class="NombreUser">
                     <p class="nombreS"><%=nombre%></p>
-                    <p class="userS"><%=user%></p>
+                    <p id="sacar" class="userS"><%=user%></p>
                 </div>
                 <img src="../<%=imagenperfil%>" alt=""/> 
                 <button class="btnFont" onclick="seguir()">Seguir</button>
             </center>
         </div>
-        <form name="formSeguir" action="Seguir.jsp" enctype=multipart/form-data method="POST">
-                <input id="inseguir" name="seguire" style="display: none" type="text">
+            <input id="inseguir" name="seguire" style="display: none" type="text">
         </form>
     </body>
 </html>
