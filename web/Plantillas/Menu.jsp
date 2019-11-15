@@ -111,6 +111,7 @@
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                
                 sta = con.createStatement();
                 sta2 = con.createStatement();
                 sta3 = con.createStatement();
