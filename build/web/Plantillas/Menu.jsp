@@ -182,7 +182,7 @@ Unidad de aprendizaje: Programación Orientada a Objetos
             
             <textarea name="textBuscar" id ="cajaBuscar" placeholder="Buscar en Venus" style="height: 25px; width:90% ; background-color: #FFFFFF;"></textarea>
             <button type="button" onclick="buscarU()"class="fa fa-map-pin imagen btn btnSR" style="font-size: 25px; height: 40px; width:6%;" id="foto">
-                <p class="nada" id="texto" name="imagenTexto"></p>
+                <p class="nada" name="imagenTexto"></p>
             </button>
             </form>
             <form name="publicar" action="Publicar2.jsp" enctype=multipart/form-data method="POST">
