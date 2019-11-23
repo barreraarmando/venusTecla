@@ -1,8 +1,12 @@
-<%-- 
-    Document   : up
-    Created on : 16/11/2017, 08:37:23 AM
-    Author     : Alumno
---%>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 
 <%@page import="org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext"%>
 <%@page import="org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory"%>

@@ -1,8 +1,12 @@
-<%-- 
-    Document   : Menu
-    Created on : 04-nov-2017, 13:24:06
-    Author     : rodri
---%>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.DriverManager"%>
@@ -12,6 +16,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
+<%@page import="servlets.Conexion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -72,6 +77,7 @@
         
         <%@page import="java.io.*, java.text.SimpleDateFormat" %>
         <%
+            Conexion objetoConexion=new Conexion();
             String user = (String)session.getAttribute("usuario");
             String imagenperfil = (String)session.getAttribute("ImagenPerfil");
             int contador=0;
@@ -110,7 +116,8 @@
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con =objetoConexion.getConexion();
+                //con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
                 
                 sta = con.createStatement();
                 sta2 = con.createStatement();
@@ -190,6 +197,27 @@
                 <div class="Publicaciones">
                     
                         <%
+                            result2=sta3.executeQuery("select * from publicacion where Id_Usuario="+(Integer.parseInt(IdUsuario)));
+                            while(result2.next()){
+                                out.println("<div class='publicacion'>");
+                            
+                                out.println("<img src='../" + imagenperfil + "'/>");
+                                out.println("<p class='nombre Raleway'>"+nombre+"</p>");
+                                out.println("<p class='user Raleway'>"+user+"</p>");
+                                out.println("<p class='contenido'> "+ result2.getString("contenido") +" </p>");
+                                
+                                    out.println("<div class='imagenCuadro'>");
+                                        out.println("<div class='vertical'>");
+                                        out.print("<img src='../"+ result2.getString("imagen") +"' class='publicacionImg' alt=''/>");
+                                        out.println("</div>");
+                                    out.println("</div>");
+                                    
+                                    out.println("<div class='fechaHora'>");
+                                        out.println("<p class='fecha Raleway'>"+ result2.getString("fecha") +"</p>");
+                                    out.println("</div>");
+                                    
+                            out.println("</div>");
+                            }
                             while(resultado.next()){
                             ResultSet resultPub = sta2.executeQuery
                               ("select * from usuario where usuario.Id_Usuario="+resultado.getInt("Id_Usuario"));
@@ -251,6 +279,7 @@
                     contador++;
                     out.println("</div>");
                 }
+                
             %>   
         </div>
         <input id="otroPerfil" name="quien" style="display: none" type="text">

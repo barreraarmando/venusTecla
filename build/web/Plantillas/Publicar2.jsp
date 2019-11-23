@@ -1,8 +1,13 @@
-<%-- 
-    Document   : Publicar
-    Created on : 24-mar-2018, 13:02:04
-    Author     : rodri
---%>
+<%@page import="servlets.Conexion"%>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.SQLException"%>
@@ -32,7 +37,7 @@
     </head>
     <body>
         <%
-            
+            Conexion objetoConexion=new Conexion();
             Connection con = null;
             Statement sta = null;
             ResultSet result;
@@ -82,7 +87,7 @@
                 
                 try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con = objetoConexion.getConexion();
                 sta = con.createStatement();
                 } catch (SQLException error) {
                     out.print(error.toString());

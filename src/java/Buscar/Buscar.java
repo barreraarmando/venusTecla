@@ -12,8 +12,15 @@ import java.sql.SQLException;
 import servlets.Conexion;
 
 /**
- *
- * @author Alumno
+
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+
  */
 public class Buscar {
     

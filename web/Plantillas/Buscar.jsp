@@ -1,8 +1,13 @@
-<%-- 
-    Document   : Buscar
-    Created on : Nov 8, 2019, 11:54:19 AM
-    Author     : rodri
---%>
+<%@page import="servlets.Conexion"%>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.DriverManager"%>
@@ -100,6 +105,7 @@
     <body>
         <%@page import="java.io.*, java.text.SimpleDateFormat" %>
         <%
+            Conexion objetoConexion=new Conexion();
             String user = (String)session.getAttribute("usuario");
             String imagenperfil = (String)session.getAttribute("ImagenPerfil");
             
@@ -136,7 +142,7 @@
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con = objetoConexion.getConexion();
                 sta = con.createStatement();
                 sta2 = con.createStatement();
                 } catch (SQLException error) {

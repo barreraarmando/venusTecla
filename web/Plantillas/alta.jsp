@@ -1,8 +1,13 @@
-<%-- 
-    Document   : alta
-    Created on : 29-oct-2017, 13:42:02
-    Author     : rodri
---%>
+<%@page import="servlets.Conexion"%>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 
 <%@page import="Encriptacion.AES"%>
 <%@page import="java.util.Set"%>
@@ -25,6 +30,7 @@
     <body>
         <%@page import="java.sql.*,java.io.*" %>
         <%
+            Conexion objetoConexion=new Conexion();
             String nombre = "";
             String apellidos = "";
             String nombreCompleto = "";
@@ -90,7 +96,7 @@
                 
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con = objetoConexion.getConexion();
                 sta = con.createStatement();
             } catch (SQLException error) {
                 out.print(error.toString());

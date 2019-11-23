@@ -1,3 +1,4 @@
+<%@page import="servlets.Conexion"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.ResultSet"%>
@@ -18,7 +19,15 @@
 <%@page import="org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload"%>
 <%@page import="org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext"%>
-<!DOCTYPE html>
+<!--
+Integrantes del equipo:
+-Rodrigo Sánchez Torres 
+-Hugo Santiago Gómez Salas 
+Grupo: 2CM3 
+Profesor: Tecla Parra Roberto 
+Fecha: 11/23/2019  
+Unidad de aprendizaje: Programación Orientada a Objetos 
+-->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,6 +36,7 @@
     <body>
         <form name="formvolver" action="Buscar.jsp" enctype=multipart/form-data method="POST">
         <%
+            Conexion objetoConexion=new Conexion();
             String userPrincipal = (String)session.getAttribute("usuario");
             String userseguidor="";
             int IdUsuario=Integer.parseInt((String)session.getAttribute("IdUser"));
@@ -62,7 +72,7 @@
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con = objetoConexion.getConexion();
                 sta = con.createStatement();
                 sta2 = con.createStatement();
                 } catch (SQLException error) {
