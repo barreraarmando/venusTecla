@@ -4,6 +4,7 @@
     Author     : Alumno
 --%>
 
+<%@page import="servlets.Conexion"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
@@ -43,6 +44,7 @@
     </head>
     <body>
         <%
+            Conexion objetoConexion=new Conexion();
             String user = (String)session.getAttribute("usuario");
             String imagenperfil = (String)session.getAttribute("ImagenPerfil");
             String nombre = (String)session.getAttribute("nombre");
@@ -54,7 +56,7 @@
             
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                con = DriverManager.getConnection("jdbc:mysql://localhost/VENUS", "root", "n0m3l0");
+                con = objetoConexion.getConexion();
                 sta = con.createStatement();
                 } catch (SQLException error) {
                     out.print(error.toString());

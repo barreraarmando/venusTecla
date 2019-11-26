@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `venus` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `venus`;
+-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: localhost    Database: venus
 -- ------------------------------------------------------
--- Server version	5.7.17-log
+-- Server version	5.7.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,34 +16,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `administrador`
---
-
-DROP TABLE IF EXISTS `administrador`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `administrador` (
-  `Id_Administrador` int(10) NOT NULL AUTO_INCREMENT,
-  `Nombre_Administrador` varchar(70) DEFAULT NULL,
-  `Apellido_Administrador` varchar(70) DEFAULT NULL,
-  `Correo_Administrador` varchar(70) NOT NULL,
-  `Username_Administrador` varchar(70) NOT NULL,
-  `Contrasenia_Administrador` varchar(20) NOT NULL,
-  `Imagen_Usuario` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`Id_Administrador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `administrador`
---
-
-LOCK TABLES `administrador` WRITE;
-/*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
-/*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `catchat`
@@ -359,6 +333,59 @@ LOCK TABLES `intercambio` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `intereses`
+--
+
+DROP TABLE IF EXISTS `intereses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `intereses` (
+  `idInteres` int(15) NOT NULL AUTO_INCREMENT,
+  `idRel` int(10) DEFAULT NULL,
+  `idUsuario` int(10) DEFAULT NULL,
+  PRIMARY KEY (`idInteres`),
+  KEY `idRel` (`idRel`),
+  KEY `idUsuario` (`idUsuario`),
+  CONSTRAINT `intereses_ibfk_1` FOREIGN KEY (`idRel`) REFERENCES `relinteresdescripcion` (`idRel`),
+  CONSTRAINT `intereses_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`Id_Usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `intereses`
+--
+
+LOCK TABLES `intereses` WRITE;
+/*!40000 ALTER TABLE `intereses` DISABLE KEYS */;
+INSERT INTO `intereses` VALUES (1,30,2),(2,31,2),(3,1,2),(4,2,2),(5,3,2),(6,9,2),(7,10,2),(8,11,2),(9,21,2),(10,24,2),(11,26,2);
+/*!40000 ALTER TABLE `intereses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `materiales`
+--
+
+DROP TABLE IF EXISTS `materiales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `materiales` (
+  `idMaterial` int(10) NOT NULL AUTO_INCREMENT,
+  `material` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idMaterial`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `materiales`
+--
+
+LOCK TABLES `materiales` WRITE;
+/*!40000 ALTER TABLE `materiales` DISABLE KEYS */;
+INSERT INTO `materiales` VALUES (1,'Chocolate'),(2,'Chocolate'),(3,'Azucar'),(4,'no'),(5,'2'),(6,'3'),(7,'4'),(8,'5'),(9,'Chocolate'),(10,'Azucar'),(11,'10 g. Levadura'),(12,'1 Cucharadita de Sal'),(13,'1 Huevo'),(14,'2-4 Tazas de Agua'),(15,'1 Raja de canela'),(16,'1 Barra de Piloncillo');
+/*!40000 ALTER TABLE `materiales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mensaje`
 --
 
@@ -386,6 +413,29 @@ CREATE TABLE `mensaje` (
 LOCK TABLES `mensaje` WRITE;
 /*!40000 ALTER TABLE `mensaje` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mensaje` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `multimedia`
+--
+
+DROP TABLE IF EXISTS `multimedia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `multimedia` (
+  `idMultimedia` int(10) NOT NULL AUTO_INCREMENT,
+  `multimedia` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idMultimedia`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `multimedia`
+--
+
+LOCK TABLES `multimedia` WRITE;
+/*!40000 ALTER TABLE `multimedia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `multimedia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -460,8 +510,8 @@ CREATE TABLE `peticion` (
   `Id_Peticion` int(15) NOT NULL AUTO_INCREMENT,
   `Id_Usuario` int(10) DEFAULT NULL,
   `Id_CatP` int(1) DEFAULT NULL,
-  `fecha` datetime DEFAULT NULL,
   `descripcion` varchar(150) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_Peticion`),
   KEY `Id_Usuario` (`Id_Usuario`),
   KEY `Id_CatP` (`Id_CatP`),
@@ -473,8 +523,6 @@ CREATE TABLE `peticion` (
 --
 -- Dumping data for table `peticion`
 --
-
-
 
 LOCK TABLES `peticion` WRITE;
 /*!40000 ALTER TABLE `peticion` DISABLE KEYS */;
@@ -505,7 +553,7 @@ CREATE TABLE `prenda` (
   CONSTRAINT `prenda_ibfk_1` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuario` (`Id_Usuario`),
   CONSTRAINT `prenda_ibfk_2` FOREIGN KEY (`Id_catPrenda`) REFERENCES `cattipoprenda` (`Id_catPrenda`),
   CONSTRAINT `prenda_ibfk_3` FOREIGN KEY (`Id_catTalla`) REFERENCES `cattallas` (`Id_catTalla`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -514,7 +562,7 @@ CREATE TABLE `prenda` (
 
 LOCK TABLES `prenda` WRITE;
 /*!40000 ALTER TABLE `prenda` DISABLE KEYS */;
-INSERT INTO `prenda` VALUES (3,2,12,3,'Uploads/Prendas/vestido1.jpeg','Esta prenda me encanta','300.00','N','S'),(5,2,9,4,'Uploads/Prendas/sudadera.jpeg','Bonita tambiÃ©n','$800','N','N'),(6,2,2,2,'Uploads/Prendas/PlayeraRosaAero.jpeg','Es una de mis playeras favoritas, les juro estÃ¡ sÃºper bonita y casual.','$200','S','N'),(8,2,10,2,'Uploads/Prendas/ChamarraNegra.jpeg','Esta chamarra estÃ¡ preciosa, y la uso muuucho para combinarla con todo, pero ultimamente ya no es lo mio usar cosas que dan tanto calorrr, espero les interese.','$800','N','S'),(9,2,12,1,'Uploads/Prendas/VestidoVino.jpeg','Es como aterciopelado y me encanta, pero es un poquito formal para usarlo cualquier dia.','$350','S','N');
+INSERT INTO `prenda` VALUES (3,2,12,3,'Uploads/Prendas/vestido1.jpeg','Esta prenda me encanta','300.00','N','S'),(5,2,9,4,'Uploads/Prendas/sudadera.jpeg','Bonita tambiÃ©n','$800','N','N'),(6,2,2,2,'Uploads/Prendas/PlayeraRosaAero.jpeg','Es una de mis playeras favoritas, les juro estÃ¡ sÃºper bonita y casual.','$200','S','N'),(8,2,10,2,'Uploads/Prendas/ChamarraNegra.jpeg','Esta chamarra estÃ¡ preciosa, y la uso muuucho para combinarla con todo, pero ultimamente ya no es lo mio usar cosas que dan tanto calorrr, espero les interese.','$800','N','S'),(9,2,12,1,'Uploads/Prendas/VestidoVino.jpeg','Es como aterciopelado y me encanta, pero es un poquito formal para usarlo cualquier dia.','$350','S','N'),(10,3,12,3,'Uploads/Prendas/vestido.jpg','Vestido negro','$800','N','N'),(11,2,2,2,'Uploads/Prendas/playeraAeroBlanca.jpeg','De mis favoritas','$250','S','N'),(12,3,12,3,'Uploads/Prendas/negro.jpg','zzzz','$250','N','N');
 /*!40000 ALTER TABLE `prenda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,11 +578,11 @@ CREATE TABLE `publicacion` (
   `Id_Usuario` int(10) DEFAULT NULL,
   `contenido` varchar(250) DEFAULT NULL,
   `imagen` varchar(100) DEFAULT NULL,
-  `fecha` datetime DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_Publicacion`),
   KEY `Id_Usuario` (`Id_Usuario`),
   CONSTRAINT `publicacion_ibfk_1` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuario` (`Id_Usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -543,6 +591,7 @@ CREATE TABLE `publicacion` (
 
 LOCK TABLES `publicacion` WRITE;
 /*!40000 ALTER TABLE `publicacion` DISABLE KEYS */;
+INSERT INTO `publicacion` VALUES (11,4,' hola','Uploads/Publicaciones/fondo.jpg','2019-11-07 13:48:15'),(12,5,'Miren estos tacones, están hermosos','Uploads/Publicaciones/zapatos.jpg','2019-11-08 14:59:04'),(13,4,' hola mundo','','2019-11-08 17:52:28'),(14,4,' intento','','2019-11-09 00:57:49'),(15,4,' intento2','','2019-11-09 01:08:26'),(16,4,' Hola a todos','','2019-11-23 17:00:52'),(17,4,' hola ','Uploads/Publicaciones/logo1.jpg','2019-11-23 17:01:10'),(18,10,' Soy el seÃ±or del bigote','','2019-11-23 17:21:31'),(19,11,' Hola soy timmy ','Uploads/Publicaciones/timmy.jpg','2019-11-23 18:00:24'),(20,11,' ','Uploads/Publicaciones/piano.jpg','2019-11-23 18:01:53');
 /*!40000 ALTER TABLE `publicacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -600,6 +649,90 @@ CREATE TABLE `relchat_usuario` (
 LOCK TABLES `relchat_usuario` WRITE;
 /*!40000 ALTER TABLE `relchat_usuario` DISABLE KEYS */;
 /*!40000 ALTER TABLE `relchat_usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `relinteresdescripcion`
+--
+
+DROP TABLE IF EXISTS `relinteresdescripcion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relinteresdescripcion` (
+  `idRel` int(10) NOT NULL AUTO_INCREMENT,
+  `idTipo` int(10) DEFAULT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idRel`),
+  KEY `idTipo` (`idTipo`),
+  CONSTRAINT `relinteresdescripcion_ibfk_1` FOREIGN KEY (`idTipo`) REFERENCES `tipointeres` (`idTipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relinteresdescripcion`
+--
+
+LOCK TABLES `relinteresdescripcion` WRITE;
+/*!40000 ALTER TABLE `relinteresdescripcion` DISABLE KEYS */;
+INSERT INTO `relinteresdescripcion` VALUES (1,1,'Moda'),(2,1,'Belleza'),(3,1,'Consejos'),(4,1,'Confesiones'),(5,1,'Diversión'),(6,1,'Amistades'),(7,1,'Apoyo'),(8,2,'Casual'),(9,2,'Elegante'),(10,2,'Colorido'),(11,2,'Invierno'),(12,2,'Primavera'),(13,2,'Verano'),(14,2,'Otoño'),(15,2,'Juvenil'),(16,2,'Fiesta'),(17,2,'Oficina'),(18,3,'Risa'),(19,3,'Moda'),(20,3,'Motivadoras'),(21,3,'Frases'),(22,3,'Política y más'),(23,3,'Amor'),(24,3,'Consejos'),(25,3,'Arte'),(26,3,'Día a día'),(27,3,'Intimidades'),(28,4,'Collares'),(29,4,'Pulseras'),(30,4,'Relojes'),(31,4,'Anillos'),(32,4,'Aretes'),(33,4,'Bufandas'),(34,4,'Pashminas'),(35,5,'Coloridos'),(36,5,'Oscuros'),(37,5,'Multicolores'),(38,5,'Arcoíris'),(39,5,'Estampados de leopardo'),(40,5,'Estampados de flores'),(41,5,'Estampados de cuadros'),(42,6,'Botas'),(43,6,'Tenis casuales'),(44,6,'Tenis deportivos'),(45,6,'Flats'),(46,6,'Tacones'),(47,6,'Sandalias'),(48,6,'Botines'),(49,6,'Plataforma'),(50,7,'Repostería'),(51,7,'DIY'),(52,7,'Cocina'),(53,7,'Moda'),(54,7,'Maquillaje'),(55,7,'Entretenimiento'),(56,7,'Cuidado Personal'),(57,7,'Diseños de uñas'),(58,8,'Faldas'),(59,8,'Playeras'),(60,8,'Blusas'),(61,8,'Pantalones'),(62,8,'Shorts'),(63,8,'Accesorios'),(64,8,'Gorros o Gorras'),(65,8,'Sueteres'),(66,8,'Sudaderas'),(67,8,'Chamarras'),(68,8,'Vestidos'),(69,8,'Zapatos'),(70,8,'Medias o Calcetas');
+/*!40000 ALTER TABLE `relinteresdescripcion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `relmaterialtutorial`
+--
+
+DROP TABLE IF EXISTS `relmaterialtutorial`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relmaterialtutorial` (
+  `idRel` int(10) NOT NULL AUTO_INCREMENT,
+  `idMaterial` int(10) DEFAULT NULL,
+  `Id_Tutorial` int(20) DEFAULT NULL,
+  PRIMARY KEY (`idRel`),
+  KEY `idMaterial` (`idMaterial`),
+  KEY `Id_Tutorial` (`Id_Tutorial`),
+  CONSTRAINT `relmaterialtutorial_ibfk_1` FOREIGN KEY (`idMaterial`) REFERENCES `materiales` (`idMaterial`),
+  CONSTRAINT `relmaterialtutorial_ibfk_2` FOREIGN KEY (`Id_Tutorial`) REFERENCES `tutorial` (`Id_Tutorial`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relmaterialtutorial`
+--
+
+LOCK TABLES `relmaterialtutorial` WRITE;
+/*!40000 ALTER TABLE `relmaterialtutorial` DISABLE KEYS */;
+INSERT INTO `relmaterialtutorial` VALUES (1,9,6),(2,10,6),(3,11,7),(4,12,7),(5,13,7),(6,14,7),(7,15,7),(8,16,7);
+/*!40000 ALTER TABLE `relmaterialtutorial` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `relmultimediatutorial`
+--
+
+DROP TABLE IF EXISTS `relmultimediatutorial`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relmultimediatutorial` (
+  `idRel` int(10) NOT NULL AUTO_INCREMENT,
+  `idMultimedia` int(10) DEFAULT NULL,
+  `Id_Tutorial` int(20) DEFAULT NULL,
+  PRIMARY KEY (`idRel`),
+  KEY `idMultimedia` (`idMultimedia`),
+  KEY `Id_Tutorial` (`Id_Tutorial`),
+  CONSTRAINT `relmultimediatutorial_ibfk_1` FOREIGN KEY (`idMultimedia`) REFERENCES `multimedia` (`idMultimedia`),
+  CONSTRAINT `relmultimediatutorial_ibfk_2` FOREIGN KEY (`Id_Tutorial`) REFERENCES `tutorial` (`Id_Tutorial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relmultimediatutorial`
+--
+
+LOCK TABLES `relmultimediatutorial` WRITE;
+/*!40000 ALTER TABLE `relmultimediatutorial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `relmultimediatutorial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -771,6 +904,84 @@ LOCK TABLES `relusuario_interes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `seguidor`
+--
+
+DROP TABLE IF EXISTS `seguidor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `seguidor` (
+  `Id_Usuario` int(10) NOT NULL,
+  `Id_Seguidor` int(10) NOT NULL,
+  PRIMARY KEY (`Id_Usuario`,`Id_Seguidor`),
+  KEY `FK2` (`Id_Seguidor`),
+  CONSTRAINT `FK1` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuario` (`Id_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK2` FOREIGN KEY (`Id_Seguidor`) REFERENCES `usuario` (`Id_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seguidor`
+--
+
+LOCK TABLES `seguidor` WRITE;
+/*!40000 ALTER TABLE `seguidor` DISABLE KEYS */;
+INSERT INTO `seguidor` VALUES (2,4),(5,4),(6,4),(7,4),(4,6),(4,7),(5,10),(5,11);
+/*!40000 ALTER TABLE `seguidor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `siguiendo`
+--
+
+DROP TABLE IF EXISTS `siguiendo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `siguiendo` (
+  `Id_Usuario` int(10) NOT NULL,
+  `Id_Siguiendo` int(10) NOT NULL,
+  PRIMARY KEY (`Id_Usuario`,`Id_Siguiendo`),
+  KEY `FK4` (`Id_Siguiendo`),
+  CONSTRAINT `FK3` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuario` (`Id_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK4` FOREIGN KEY (`Id_Siguiendo`) REFERENCES `usuario` (`Id_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `siguiendo`
+--
+
+LOCK TABLES `siguiendo` WRITE;
+/*!40000 ALTER TABLE `siguiendo` DISABLE KEYS */;
+INSERT INTO `siguiendo` VALUES (4,2),(6,4),(7,4),(4,5),(10,5),(11,5),(4,6),(4,7);
+/*!40000 ALTER TABLE `siguiendo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipointeres`
+--
+
+DROP TABLE IF EXISTS `tipointeres`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipointeres` (
+  `idTipo` int(10) NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idTipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipointeres`
+--
+
+LOCK TABLES `tipointeres` WRITE;
+/*!40000 ALTER TABLE `tipointeres` DISABLE KEYS */;
+INSERT INTO `tipointeres` VALUES (1,'Chats'),(2,'Outfits'),(3,'Publicaciones'),(4,'Accesorios'),(5,'Colores y Estampados'),(6,'Zapatos'),(7,'Tutoriales'),(8,'Ropa');
+/*!40000 ALTER TABLE `tipointeres` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tutorial`
 --
 
@@ -781,24 +992,23 @@ CREATE TABLE `tutorial` (
   `Id_Tutorial` int(20) NOT NULL AUTO_INCREMENT,
   `Id_Usuario` int(10) DEFAULT NULL,
   `titulo` varchar(100) DEFAULT NULL,
-  `contenido` varchar(200) DEFAULT NULL,
-  `imagen` varchar(100) DEFAULT NULL,
-  `notas` varchar(200) DEFAULT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `multimedia` varchar(100) DEFAULT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `material` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Id_Tutorial`),
   KEY `Id_Usuario` (`Id_Usuario`),
   CONSTRAINT `tutorial_ibfk_1` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuario` (`Id_Usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `tutorial`
 --
 
-
-
 LOCK TABLES `tutorial` WRITE;
 /*!40000 ALTER TABLE `tutorial` DISABLE KEYS */;
+INSERT INTO `tutorial` VALUES (3,3,'Mentas con chocolate','Mentas muy ricas con chocolate y azucar','Uploads/Tutorial/Mentas con chocolateQue FÃ¡cil!.mp4','2018-04-09 04:33:06','Mentas'),(4,3,'Equis','dfsdf','Uploads/Tutorial/video.mp4','2018-04-10 02:39:46','esto'),(5,3,'Y','DFSDFSD','Uploads/Tutorial/video.mp4','2018-04-10 02:47:15','1'),(6,3,'Mentas con chocolate','Ricas mentas con chocolates y azucar glass para que compartas con tus amigas','Uploads/Tutorial/Mentas con chocolateQue FÃ¡cil!.mp4','2018-04-10 05:26:16','Mentas'),(7,2,'Pan','Delicioso','Uploads/Tutorial/bunuelos.mp4','2018-04-10 13:24:40','1 Â½ tazas de Harina');
 /*!40000 ALTER TABLE `tutorial` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -820,7 +1030,7 @@ CREATE TABLE `usuario` (
   `IP_Usuario` varchar(20) NOT NULL,
   `fechaNac` date DEFAULT NULL,
   PRIMARY KEY (`Id_Usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -829,13 +1039,63 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (2,'Marbella','Velazquez','marbella.velazquez.ortega@gmail.com','MarbellaVelazquez','pI376GD4QauApRZoXvUe3g==','Uploads/marbella.jpg','192.168.20.138',NULL);
+INSERT INTO `usuario` VALUES (2,'Marbella','Velazquez','marbella.velazquez.ortega@gmail.com','MarbellaVelazquez','pI376GD4QauApRZoXvUe3g==','Uploads/marbella.jpg','10.190.26.127',NULL),(3,'Rodrigo','Sanchez','rodrigosanchez315@yahoo.com.mx','rodrigo123','mC5RgrANG2C3GVH10tHSfg==','Uploads/Wild+Dogsmall.jpg','127.0.0.1',NULL),(4,'Rodrigo','Sanchez','rodrigosanchez315@yahoo.com.mx','rodrigoESCOM','c7k5kArZIoDfomMFoK+zIQ==','Uploads/dn.jpg','192.168.100.8',NULL),(5,'Hugo','Gomez','hugo23@yahoo.com.mx','huguitobaby','o8w+lHEPFLuHNm+CEZ6T3A==','Uploads/poli.png','192.168.100.8',NULL),(6,'Marbella','Velazquez','marbella.velazquez.ortega@gmail.com','mar123','NWVqjqOrpFUV4umX2Q4XeA==','Uploads/Gabby.jpg','192.168.100.8',NULL),(7,'Pedro','Cabezon','pedrito69@hotmail.com','pedrito69','A6VdCfHFbC5zNPx6jAXwBg==','Uploads/compras.jpg','192.168.100.8',NULL),(8,'Juan','Perez','juan@22.hot','juanito22','PtX6r6l/wdAruGdAUMg8cQ==','Uploads/Calixto.jpg','192.168.100.8',NULL),(9,'Martin','Perex','martin@prendido.com','martin123','Co7QMYlAOHjJA3UeLrCv5g==','Uploads/maxresdefault.jpg','192.168.1.7',NULL),(10,'Senor','Bigote','senor@delbigote.com','senordelbigote','mbRcXaPbCdJXRaBzqtUa1w==','Uploads/senor.jpg','192.168.1.7',NULL),(11,'Timmy','Turner','timmy@gmail.com','timmy','cg5dKIlFSsAp793qjRLg2w==','Uploads/timyy.jpg','192.168.1.7',NULL),(12,'Adan','Sandoval','adan17@gmail.com','adan123','AxxAccvJqHtndDApL0Ig6A==','Uploads/esco.png','10.100.67.246',NULL),(13,'Belen','Hinojosa','belen45@gmail.com','belen123','N9rY+OacFkAZq8PyxhTtsw==','Uploads/negro.jpg','10.100.67.246',NULL),(14,'Carlos','Villena','carlos85@gmail.com','carlos123','uX4apIH6/TS85ZV6Y9Fw3A==','Uploads/franklin.jpg','10.100.67.246',NULL),(15,'David','Aguilar','davidaguilar@gmail.com','david123','qzv4NHA3EzHUaDX0h5bkng==','Uploads/poli.png','10.100.67.246',NULL),(16,'Edgar','Jimenez','edgarsecae@gmail.com','edgar123','h5zv0ix0T+NhS4aDfPvYkA==','Uploads/senor.jpg','10.100.67.246',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'venus'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `deleteInteres` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInteres`(in idR int(10), usuario varchar(70))
+begin
+ 
+ declare idU int; 
+
+ set idU=(select Id_Usuario from usuario where Username_Usuario=usuario);
+
+ delete from Intereses where idUsuario=idU and idRel=idR;
+ 
+ end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `guardarInteres` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `guardarInteres`(in idR int(10), usuario varchar(70))
+begin
+ 
+ declare idU int; 
+
+ set idU=(select Id_Usuario from usuario where Username_Usuario=usuario);
+
+ insert into Intereses(idRel, idUsuario) values(idR,idU);
+ 
+ end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ImagenTipoPrendaUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -856,6 +1116,35 @@ set idUsuario=(select Id_Usuario from usuario where Username_Usuario=usuario);
 select imagen,Id_Prenda from prenda inner join cattipoprenda on prenda.Id_catPrenda=cattipoprenda.Id_catPrenda where cattipoprenda.prenda=tipoPrenda and Id_Usuario=idUsuario;
 
 end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `nuevaMultimedia` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `nuevaMultimedia`(in descripcion varchar(50))
+begin
+ 
+ declare idM int;
+ declare idT int;
+ 
+ insert into multimedia (multimedia) values(descripcion);
+ 
+ set idM = (select max(idMultimedia) from multimedia);
+ set idT = (select max(Id_Tutorial) from tutorial);
+ 
+ insert into relmultimediatutorial (idMultimedia, Id_Tutorial) values(idM,idT);
+ 
+ end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -886,6 +1175,56 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `nuevoMaterial` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `nuevoMaterial`(in descripcion varchar(50))
+begin
+ 
+ declare idM int;
+ declare idT int;
+ 
+ insert into materiales (material) values(descripcion);
+ 
+ set idM = (select max(idMaterial) from materiales);
+ set idT = (select max(Id_Tutorial) from tutorial);
+ 
+ insert into relmaterialtutorial (idMaterial, Id_Tutorial) values(idM,idT);
+ 
+ end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `nuevoTutorial` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `nuevoTutorial`(in idUsuario int(10), tit varchar(100), descrip varchar(1000), multimed varchar(100), mate varchar(50))
+begin
+
+insert into tutorial (Id_Usuario,titulo,descripcion,multimedia,material) values(idUsuario, tit, descrip, multimed, mate);
+
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `seleccionarTipoPrendas` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -904,6 +1243,7 @@ declare idUsuario int;
 set idUsuario=(select Id_Usuario from usuario where Username_Usuario=usuario);
 
 select catTipoPrenda.prenda from prenda inner join catTipoPrenda on prenda.Id_catPrenda=cattipoprenda.Id_catPrenda where Id_Usuario=idUsuario group by prenda.Id_catPrenda;
+
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -958,6 +1298,80 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `selectInteres` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectInteres`(in idR int(10), usuario varchar(70))
+begin
+ 
+ declare idU int; 
+
+ set idU=(select Id_Usuario from usuario where Username_Usuario=usuario);
+
+ select * from Intereses where idUsuario=idU and idRel=idR;
+ 
+ end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `selectTutoriales` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectTutoriales`()
+begin
+
+SELECT usuario.Nombre_Usuario, usuario.Username_Usuario, usuario.Imagen_Usuario, 
+tutorial.titulo, tutorial.descripcion, tutorial.multimedia, tutorial.fecha, tutorial.material, tutorial.Id_Tutorial,
+materiales.material as 'materialesTutorial'
+FROM usuario
+inner join tutorial on tutorial.Id_Usuario=usuario.Id_Usuario
+inner join  materiales inner join relmaterialtutorial on relmaterialtutorial.idMaterial = materiales.idMaterial 
+where relmaterialtutorial.Id_Tutorial=tutorial.Id_Tutorial
+order by tutorial.fecha desc;
+
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `updatePrenda` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePrenda`(in idPrenda int(15), idTipoPrenda int(10), idTalla int(10), urlImg varchar(100), description varchar(500), price varchar(10), favorite varchar(10), inchange varchar(10))
+begin
+
+update prenda set Id_catPrenda=idTipoPrenda, Id_catTalla=idTalla, imagen=urlImg, descripcion=description, precio=price, favorito=favorite, intercambiable=inchange where Id_Prenda=idPrenda;
+
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -968,4 +1382,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-03  8:15:22
+-- Dump completed on 2019-11-25 19:13:12
